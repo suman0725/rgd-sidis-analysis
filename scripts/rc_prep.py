@@ -44,12 +44,12 @@ Prepare radiative-correction inputs from SIDIS parquet files.
   # LD2:
   python3 rc_prep.py \\
       /volatile/clas12/suman/00_RGD_Analysis/data/experimental/parquet/LD2/018420/*.parquet \\
-      --target LD2 --out-dir /work/clas12/suman/00_RGD_Analysis/rc
+      --target LD2 --out-dir /work/clas12/suman/00_RGD_Analysis/haprad_rc
 
   # CxC:
   python3 rc_prep.py \\
       /volatile/clas12/suman/00_RGD_Analysis/data/experimental/parquet/CxC/018454/*.parquet \\
-      --target CxC --out-dir /work/clas12/suman/00_RGD_Analysis/rc
+      --target CxC --out-dir /work/clas12/suman/00_RGD_Analysis/haprad_rc
 
   # Override any bin edges:
   python3 rc_prep.py *.parquet --target LD2 \\
