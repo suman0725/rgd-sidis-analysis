@@ -32,8 +32,8 @@ Prepare radiative-correction inputs from SIDIS parquet files.
 ═══════════════════════════════════════════════════════════════════════════════
  DEFAULT RC GRID
 ═══════════════════════════════════════════════════════════════════════════════
-  Q²   [GeV²] : [1.0, 2.0, 4.0, 8.0]        — matches analysis Q² bins
-  xB          : [0.0, 0.2, 0.4, 0.6, 1.1]   — matches analysis xB bins
+  Q²   [GeV²] : [1.0, 2.0, 4.0, 8.0]              — matches analysis Q² bins
+  xB          : [0.1, 0.2, 0.3, 0.4, 0.6, 0.75]  — matches analysis xB bins
   zh          : [0.3, 0.5, 0.75, 1.0]        — Binning.hxx
   pT²  [GeV²] : [0.0, 0.5, 1.0, 1.5]        — Binning.hxx
   φ    [deg]  : [-180,-108,-36,36,108,180]    — Binning.hxx (5 bins)
@@ -92,7 +92,7 @@ M_PROTON = 0.9382720813   # GeV  (matches physics_constants.py)
 # Update these for the next analysis iteration — no other file needs to change.
 DEFAULT_BINS = {
     "Q2":  [1.0, 2.0, 4.0, 8.0],
-    "xB":  [0.0, 0.2, 0.4, 0.6, 1.1],
+    "xB":  [0.1, 0.2, 0.3, 0.4, 0.6, 0.75],
     "zh":  [0.3, 0.5, 0.75, 1.0],
     "pT2": [0.0, 0.5, 1.0, 1.5],
     "phi": [-180.0, -108.0, -36.0, 36.0, 108.0, 180.0],
