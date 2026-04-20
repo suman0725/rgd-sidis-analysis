@@ -39,6 +39,7 @@ void hipo_to_root(const char* fname = "rec_clas_.hipo",
 
     // calorimeter (PCAL + EC for electron SF and fiducial)
     "REC_Calorimeter_pindex",
+    "REC_Calorimeter_detector",
     "REC_Calorimeter_sector",
     "REC_Calorimeter_layer",
     "REC_Calorimeter_energy",
