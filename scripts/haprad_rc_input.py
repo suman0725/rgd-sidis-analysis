@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-rc_prep.py
+haprad_rc_input.py
 Prepare radiative-correction inputs from SIDIS parquet files.
 
 ═══════════════════════════════════════════════════════════════════════════════
@@ -8,7 +8,7 @@ Prepare radiative-correction inputs from SIDIS parquet files.
 ═══════════════════════════════════════════════════════════════════════════════
   parquet files (from root_2_parquet.py)
       → count_sidis_bins.py   yields CSV for physics analysis
-      → rc_prep.py            bins pions into RC grid         ← THIS FILE
+      → haprad_rc_input.py            bins pions into RC grid         ← THIS FILE
           ├── centroids_{TARGET}.csv   mean (Q², xB, nu, zh, pT², φ) per bin
           └── phi_fits_{TARGET}.csv    φ-fit parameters per 4-D bin
       → exec_rad-corr_chain.sh  calls HAPRAD (uses nu_mean) → RCFactor.txt
@@ -42,17 +42,17 @@ Prepare radiative-correction inputs from SIDIS parquet files.
  USAGE
 ═══════════════════════════════════════════════════════════════════════════════
   # LD2:
-  python3 rc_prep.py \\
+  python3 haprad_rc_input.py \\
       /volatile/clas12/suman/00_RGD_Analysis/data/experimental/parquet/LD2/018420/*.parquet \\
       --target LD2 --out-dir /work/clas12/suman/00_RGD_Analysis/haprad_rc
 
   # CxC:
-  python3 rc_prep.py \\
+  python3 haprad_rc_input.py \\
       /volatile/clas12/suman/00_RGD_Analysis/data/experimental/parquet/CxC/018454/*.parquet \\
       --target CxC --out-dir /work/clas12/suman/00_RGD_Analysis/haprad_rc
 
   # Override any bin edges:
-  python3 rc_prep.py *.parquet --target LD2 \\
+  python3 haprad_rc_input.py *.parquet --target LD2 \\
       --bins "Q2=1,2,4,8;xB=0,0.2,0.4,0.6,1.1;zh=0.3,0.5,0.75,1.0"
 """
 
@@ -197,7 +197,7 @@ def main():
             for d in ("Q2", "xB", "zh", "pT2", "phi")}
 
     print("=" * 65)
-    print(f"  rc_prep.py  —  target: {args.target}")
+    print(f"  haprad_rc_input.py  —  target: {args.target}")
     print(f"  Files  : {len(file_list)}")
     print(f"  Out    : {args.out_dir}")
     print("  RC grid bin edges:")
