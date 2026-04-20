@@ -13,7 +13,7 @@
 
 TARGET=${1}
 RUN=${2}
-MAX_JOBS=8    # parquet jobs are CPU/memory heavy — keep lower than ROOT jobs
+MAX_JOBS=1    # sequential: volatile Lustre filesystem saturates under parallel reads
 
 ROOT_DIR="/volatile/clas12/suman/00_RGD_Analysis/data/experimental/root/${TARGET}/${RUN}"
 OUT_DIR="/volatile/clas12/suman/00_RGD_Analysis/data/experimental/parquet/${TARGET}/${RUN}"
