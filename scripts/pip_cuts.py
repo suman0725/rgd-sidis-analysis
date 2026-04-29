@@ -140,22 +140,26 @@ def pip_cutflow(df, ele_vz, target, polarity="OB"):
     masks["base"] = is_fd_pip(pid, status)
     N_base = int(np.sum(masks["base"]))
 
-    # STEP 2: Δt vs p cut
-    masks["deltat"] = masks["base"] & delt_t_mask(p, pip_dt, target, polarity)
-    # Old chi2pid fallback for comparison:
-    # masks["chi2pid"] = masks["base"] & chi2pid_mask(chi2pid)
+    # STEP 2: chi2pid cut
+    masks["chi2pid"] = masks["base"] & chi2pid_mask(chi2pid, cut_val=10.0)
 
-    # STEP 3: Vz (Generic helper call)
+    # STEP 3: Δt vs p cut
+    masks["deltat"] = masks["chi2pid"] & delt_t_mask(p, pip_dt, target, polarity)
+
+    # STEP 4: Vz
     masks["vz"] = masks["deltat"] & vz_mask(vz, target, polarity)
+
+    # STEP 5: DC edge cut
     masks["dc"] = masks["vz"] & dc_edge_mask_pip(df, polarity)
 
-    # STEP 5: dvz (Now uses the dictionary values from the top)
+    # STEP 6: ΔVz
     masks["dvz"] = masks["dc"] & dvz_mask(vz, ele_vz, target, polarity)
+
 
     masks["final"] = masks["dvz"]
 
     # Generate Stats (Consistent dictionary keys)
-    order = ["base", "deltat", "vz", "dc", "dvz", "final"]
+    order = ["base", "chi2pid", "deltat", "vz", "dc", "dvz", "final"]
     cutflow = {step: {"N": int(np.sum(masks[step])), 
                       "eff_base": 100.0 * np.sum(masks[step]) / N_base if N_base > 0 else 0.0} 
                for step in order}

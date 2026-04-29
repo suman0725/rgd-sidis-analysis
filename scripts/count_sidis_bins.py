@@ -260,26 +260,31 @@ def main():
         df = pd.read_parquet(fpath)
 
         if is_gen:
-            # ── Gen mode: apply kinematic cuts directly, unit weights ─────────
+            # ── Gen mode: keep DIS denominator and SIDIS numerator distinct ──
             apply_dis = args.apply_dis or args.apply_sidis
+            df_dis = df
             if apply_dis:
-                df = df[
+                df_dis = df[
                     (df["Q2"] >= args.q2_min)
                     & (df["W"]  >= args.w_min)
                     & (df["y"]  >= args.y_min)
                     & (df["y"]  <= args.y_max)
                 ]
-            if args.apply_sidis:
-                df = df[
-                    (df["zh"]  >= args.zh_min)
-                    & (df["zh"]  <= args.zh_max)
-                    & (df["pT2"] <= args.pt2_max)
-                ]
-            # Each row = one pion; each unique event = one electron
-            df_e = df.drop_duplicates(subset=["sel_event_idx"]).dropna(subset=["Q2", "xB"])
+            # Each unique generated DIS event contributes once to N_e.
+            # Do not apply SIDIS hadron cuts before filling this denominator.
+            df_e = df_dis.drop_duplicates(subset=["sel_event_idx"]).dropna(subset=["Q2", "xB"])
             hist_e.fill(df_e["Q2"].to_numpy(), df_e["xB"].to_numpy())
-            df_h = df.dropna(subset=axis_list)
-            df["hel_sign"] = np.nan   # no helicity in gen
+
+            # Each generated pion row that also passes SIDIS cuts contributes to N_pip.
+            df_h = df_dis
+            if args.apply_sidis:
+                df_h = df_h[
+                    (df_h["zh"]  >= args.zh_min)
+                    & (df_h["zh"]  <= args.zh_max)
+                    & (df_h["pT2"] <= args.pt2_max)
+                ]
+            df_h = df_h.dropna(subset=axis_list).copy()
+            df_h["hel_sign"] = np.nan   # no helicity in gen
 
         else:
             # ── Step 1: Electron selection — DIS cuts ─────────────────────────
